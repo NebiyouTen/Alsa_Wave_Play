@@ -15,9 +15,12 @@
 
 #define SECOND 1000000
 #define file_name "sample_wav.wav"
+
+
 /*
- * 
- * 
+ * @main program. It opens a PCM devices, initializes paramters and 
+ *  makes a call to the wave_play program by passing a filename, a PCM    
+ *  handle and number of frames. 
  *
  * */
 int main(){

@@ -33,6 +33,19 @@ FILE *file_ptr;
 unsigned char temp_buffer[4];
 unsigned char temp_buffer_2[2];
 
+/*
+ * @Function to read a wav file and play it using
+ * the PCM handle passed. 
+ * 
+ * Arguments: file_name: name of the wav file to be played
+ *            handle   : Pointer to a PCM 
+ * 			  frames   : Number of frames to be written in the buffer 
+ * 						 , if chunk mode is used
+ *  
+ * Returns: integer:
+ * 
+ * */
+
 int read_wave_and_play(char *file_name, snd_pcm_t *handle, 
 			snd_pcm_uframes_t frames){
 	
