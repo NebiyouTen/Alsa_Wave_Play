@@ -5,5 +5,6 @@ A simple C program that uses the ALSA audio library to play wav files. [Here](ht
 To run use 
 ```
 ./gcc_compile_script
+./PCM_Wav_Play
 ```
-It generates PCM_Wav_Play executlabe file. 
+It generates  executlabe file. 
