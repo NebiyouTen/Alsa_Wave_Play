@@ -1,1 +1,0 @@
-gcc -I. PCM_Wav_Play.c wave_play.c -o PCM_Wav_Play -lasound
