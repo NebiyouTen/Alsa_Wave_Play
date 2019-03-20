@@ -14,8 +14,8 @@
 #include "wave_play.h"
 
 #define SECOND 1000000
-#define file_name "sample_wav.wav"
-
+#define file_name "test.wav"
+#define SAMPLE_RATE 8000
 
 /*
  * @main program. It opens a PCM devices, initializes paramters and 
@@ -30,15 +30,31 @@ int main(){
 	// Structure used to configure the PCM device
 	snd_pcm_hw_params_t *params;
 	// name of the device, default for now
-	char * device_name =  "default";
+	char * device_name =  "plug:default";
 	// Variable to store return values of functions
 	int return_val;
 	// frames used to determine size of a period
 	snd_pcm_uframes_t frames;
 	// Buffer to store data to be captured or played
 	char *buffer;
-	//char * file_name = "sample_wav.wav";
 	unsigned int size, sample_rate, period_time, loop_time, num_loops;
+	
+	
+	// Get list of devie names
+	char **hints;
+	return_val = snd_device_name_hint(-1, "pcm", (void***)&hints);
+	char ** n = hints;
+	while (*n != NULL) {
+
+		char *name = snd_device_name_get_hint(*n, "NAME");
+		printf("Devide found : %s \n", name);
+		if (name != NULL && 0 != strcmp("null", name)) {
+			//Copy name to another buffer and then free it
+			free(name);
+		}
+		n++;
+	}//End of while
+	// end list of devie name retrival 
 	
 	// open PCM device 
 	if ( (return_val = snd_pcm_open(&handle, device_name, 
@@ -48,8 +64,10 @@ int main(){
             , snd_strerror(return_val));
 		exit(1);
 	}
+	
 	fprintf(stdout, "PCM Device \"%s\" successfully opened\n" \
 			, device_name );
+
 
     // Allocate params 
 	snd_pcm_hw_params_alloca(&params);
@@ -80,13 +98,16 @@ int main(){
 	}
 	// sample rate of sample wav file is 256000 bits/second 
 	// Invalid argument error if Sample rate is higher than 200,000
-	sample_rate = 8000;
+	sample_rate = SAMPLE_RATE;
 	if (snd_pcm_hw_params_set_rate_near(handle, params, 
                                   &sample_rate, 0) < 0){
 		fprintf(stderr, 
             "unable to set sample rate to %d ",sample_rate);
 		exit(1);
-	}							  
+	}	
+	snd_pcm_hw_params_set_rate(handle, params, 
+                                  sample_rate, 0);
+							  
 	// set period size to 32 frames. A frame has 2 samples, left and 
 	// right samples. A sample has 2 bytes, most and least significant. 
 	frames = 64;

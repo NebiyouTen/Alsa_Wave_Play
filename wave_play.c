@@ -56,7 +56,7 @@ int read_wave_and_play(char *file_name, snd_pcm_t *handle,
 	char * data_temp_buffer;
 	
 	
-	fprintf(stdout,"Wave file reading started \n");
+	fprintf(stdout,"Wave file reading started \n\n\n");
 	
 	if ( (file_ptr = fopen(file_name, "rb") ) == NULL){
 			printf("error in opening file");
@@ -65,15 +65,15 @@ int read_wave_and_play(char *file_name, snd_pcm_t *handle,
 	
 	// read header data
 	ret = fread(wave_header.riff, sizeof(wave_header.riff),1,file_ptr);
-	printf("RIFF header values %s .\n",wave_header.riff);
+	printf("RIFF header values %s.\n",wave_header.riff);
 	// read file size
 	ret = fread(temp_buffer, sizeof(temp_buffer), 1, file_ptr);
 	wave_header.file_size = temp_buffer[0] | (temp_buffer[1] << 8) | \
 	                (temp_buffer[2] << 16) | (temp_buffer[3] << 24);
-	printf("Wav file size %u KB.\n",wave_header.file_size / 1024);
+	printf("Wav file size %u KB.\n",wave_header.file_size );
 	// get wav header
 	ret = fread(wave_header.wave, sizeof(wave_header.wave),1, file_ptr);
-	printf("Wave marker is %s .\n",wave_header.wave);
+	printf("Wave marker is %s.\n",wave_header.wave);
 	// fmt marker
 	ret = fread(wave_header.fmt_chunk_marker, \
 				sizeof(wave_header.fmt_chunk_marker), 1, file_ptr);
@@ -162,8 +162,8 @@ int read_wave_and_play(char *file_name, snd_pcm_t *handle,
 		for (i=0; i< number_of_samples; i++){
 			
 			ret = fread(data_temp_buffer, NUM_BYTES ,frames, file_ptr);
-			printf("Reading sample %d of %d %lu samples \n",i,\
-				number_of_samples , sizeof(data_temp_buffer));
+			//printf("Reading sample %d/%d\n",i,\
+			//	number_of_samples );
 			if (ret == 0) {
 				fprintf(stderr, "file reading error \n");
 				break;
